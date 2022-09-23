@@ -1,25 +1,26 @@
-def read_sitemap(sitemap):
+def read_sitemap(sitemap, features):
     """ Identifies the urls and last modification date from sitemap
     
     arg:
         sitemap (BeautifulSoup): Should be a sitemap xml, created using BeautifulSoup
+        features (list): The features in the sitemap that you want to read
 
     returns:
         sitePages (dictionary): Contains urls of site and when they were last modified
 
     """
+    
+    # Create empty dictionary
+    sitePages = {}
 
-    # Get url list
-    url_l = site_map.find_all("loc")
-    url_l = [x.text for x in url_l]
+    # Loop through features
+    for feat in features:
 
-    # Get lastmod
-    lastmod_l = site_map.find_all("lastmod")
-    lastmod_l = [x.text for x in lastmod_l]
+        # Extract text from features
+        feat_l = sitemap.find_all(feat)
 
-    # Join in dictionary
-    sitePages = {'url': url_l, 
-                 'lastmod': lastmod_l}
+        # Update dictionary with list of text
+        sitePages.update( {feat: list(x.text for x in feat_l)} )
 
     # Return dictionary
     return sitePages
